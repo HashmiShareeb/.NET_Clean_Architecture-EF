@@ -1,0 +1,35 @@
+@FinancialAPI_URL = http://localhost:5000
+
+GET {{FinancialAPI_URL}}/api/users
+Accept: application/json
+
+###
+
+GET {{FinancialAPI_URL}}/api/users/33
+Accept: application/json
+###
+
+POST {{FinancialAPI_URL}}/api/users
+Content-Type: application/json
+
+{  
+  "userName": "John Doe",
+  "email": "john_doe@example.com"
+}
+
+###
+
+PUT  {{FinancialAPI_URL}}/api/users/95e2e144-9665-4e6a-b947-dc40bd6882b9
+Content-Type: application/json
+
+{  
+  "userId": "95e2e144-9665-4e6a-b947-dc40bd6882b9",
+  "userName": "Bobby Tables",
+  "email": "bt@gmail.com"
+}
+
+###
+
+DELETE {{FinancialAPI_URL}}/api/users/6ce72c55-5f12-462f-b8d3-abb5a2462629
+
+###
