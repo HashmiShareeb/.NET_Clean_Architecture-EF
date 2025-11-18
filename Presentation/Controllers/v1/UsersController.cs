@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace crispy_winner.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class UsersController : ControllerBase
     {
         // basic list for now
@@ -17,7 +18,7 @@ namespace crispy_winner.Presentation.Controllers
         // sample user
           new Users
           {
-            UserId= Guid.NewGuid().ToString(),
+            UserId= Guid.NewGuid(),
             UserName= "john_doe",
             Email="john_doe@example.com"
           }
@@ -34,7 +35,7 @@ namespace crispy_winner.Presentation.Controllers
         [HttpGet("{userId}")]
         public ActionResult<Users> GetUserById(string userId)
         {
-            var user = users.FirstOrDefault(u => u.UserId == userId);
+            var user = users.FirstOrDefault(u => u.UserId == Guid.Parse(userId));
             if (user == null)
             {
                 return NotFound(); // 404 status code
@@ -50,7 +51,8 @@ namespace crispy_winner.Presentation.Controllers
                 return BadRequest(); // return bad request if newUser is null
             }
 
-            newUser.UserId = Guid.NewGuid().ToString(); // assign new GUID as UserId
+            //newUser.UserId = Guid.NewGuid().ToString(); // assign new GUID as UserId
+            newUser.UserId = Guid.NewGuid(); // assign new GUID as UserId
             users.Add(newUser);
 
             //specify that the object was created => 200 status code
@@ -63,8 +65,8 @@ namespace crispy_winner.Presentation.Controllers
         [HttpPut("{userId}")]
         public IActionResult UpdateUser(string userId, Users updatedUser)
         {
-            var user = users.FirstOrDefault(u => u.UserId == userId);
-            if (updatedUser == null || userId != updatedUser.UserId)
+            var user = users.FirstOrDefault(u => u.UserId == Guid.Parse(userId));
+            if (updatedUser == null || Guid.Parse(userId) != updatedUser.UserId)
             {
                 return NotFound(); // 400 status code
             }
@@ -85,7 +87,7 @@ namespace crispy_winner.Presentation.Controllers
         [HttpDelete("{userId}")]
         public IActionResult DeleteUser(string userId)
         {
-            var user = users.FirstOrDefault(u => u.UserId == userId);
+            var user = users.FirstOrDefault(u => u.UserId == Guid.Parse(userId)); //Parse string to Guid
             if (user == null)
             {
                 return NotFound(); // 404 status code

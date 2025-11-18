@@ -7,14 +7,11 @@ using Microsoft.EntityFrameworkCore;
 namespace crispy_winner.Domain.Entities
 {
     [Keyless]
-    public class Budget
+    public class Categories
     {
-        public Guid UserId { get; set; }
-
         public Guid CategoryId { get; set; }
 
-        public decimal Amount { get; set; }
-
-        public DateTime Month { get; set; }
+        public string CategoryName { get; set; }
+        public string CategoryType { get; set; }
     }
 }

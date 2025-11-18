@@ -1,10 +1,27 @@
+using crispy_winner.infrastructure.context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllers(); //!add controllers to the services
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+
+//! add dbcontext to services
+builder.Services.AddDbContext<ApplicationContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Test Application Running");
-
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
+app.MapGet("/", () => "Financial Management API is running...");
 
 app.MapControllers(); //!only way to make controller work
 

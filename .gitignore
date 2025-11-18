@@ -456,3 +456,7 @@ FodyWeavers.xsd
 
 *.ide.*
 *.iobj
+
+#appsettings.json
+*appsettings.json
+*appsettings.*.json
