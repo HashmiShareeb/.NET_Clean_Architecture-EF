@@ -19,10 +19,10 @@ namespace crispy_winner.infrastructure.context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Entity<Users>().HasKey(u => u.UserId);
-            // modelBuilder.Entity<Categories>().HasKey(c => c.CategoryId);
-            // modelBuilder.Entity<Transaction>().HasKey(t => new { t.UserId, t.CategoryId, t.Date });
-            // modelBuilder.Entity<Budget>().HasKey(b => new { b.UserId, b.CategoryId, b.Month });
+            modelBuilder.Entity<Users>().HasKey(u => u.UserId);
+            modelBuilder.Entity<Categories>().HasKey(c => c.CategoryId);
+            modelBuilder.Entity<Transaction>().HasKey(t => new { t.UserId, t.CategoryId, t.Date });
+            modelBuilder.Entity<Budget>().HasKey(b => new { b.UserId, b.CategoryId, b.Month });
 
             base.OnModelCreating(modelBuilder);
 
@@ -32,6 +32,13 @@ namespace crispy_winner.infrastructure.context
                     UserId = Guid.NewGuid(),
                     UserName = "Admin",
                     Email = "admin@example.com",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new Users
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = "User",
+                    Email = "user@example.com",
                     CreatedAt = DateTime.UtcNow
                 }
             );

@@ -12,6 +12,7 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0+MySQL9.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.2.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     
   </ItemGroup>
 

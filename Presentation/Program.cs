@@ -13,9 +13,18 @@ builder.Services.AddApiVersioning(options =>
 });
 
 //! add dbcontext to services
+// builder.Services.AddDbContext<ApplicationContext>(
+//     options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"))
+// );
 builder.Services.AddDbContext<ApplicationContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"), // The connection string
+        ServerVersion.AutoDetect // Automatically detect the MySQL server version
+        (builder.Configuration.GetConnectionString("DefaultConnection")) // Needed so EF Core can generate compatible SQL
+    )
 );
+
+
 
 
 

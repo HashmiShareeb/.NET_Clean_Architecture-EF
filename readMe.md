@@ -3,5 +3,11 @@
 ```bash
 dotnet ef migrations add init
 
-dotnet ef database update
+#try always updating 
+dotnet ef database update 
+
+
+
+
+git rm --cached <file>
 ```
