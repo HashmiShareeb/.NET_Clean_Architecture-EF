@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace crispy_winner.Domain.Entities
 {
-    [Keyless]
     public class Budget
     {
         public Guid UserId { get; set; }

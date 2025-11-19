@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace crispy_winner.Domain.Entities
 {
-    [Keyless]
+    
     public class Transaction
     {
         public Guid UserId { get; set; }

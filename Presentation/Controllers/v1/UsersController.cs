@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using crispy_winner.Domain.Entities;
+using FinancialApi.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace crispy_winner.Presentation.Controllers
@@ -12,6 +13,13 @@ namespace crispy_winner.Presentation.Controllers
     [ApiVersion("1.0")]
     public class UsersController : ControllerBase
     {
+        private readonly FinancialsService _financialsService;
+
+        public UsersController(FinancialsService _financialsService)
+        {
+           this._financialsService = _financialsService;
+        }
+        
         // basic list for now
         public static List<Users> users = new List<Users>
         {
@@ -27,20 +35,23 @@ namespace crispy_winner.Presentation.Controllers
         //**HTTP METHODS**
         [HttpGet]
         //? Action result so it also returns status codes 
-        public ActionResult<List<Users>> GetUsers()
+        public async Task<ActionResult<List<Users>>> GetUsers()
         {
-            return Ok(users); // 200 status code
+            //return Ok(users); // 200 status code
+            
+            var allUsers  = await _financialsService.GetAllUsers();
+            return Ok(allUsers);
         }
 
         [HttpGet("{userId}")]
-        public ActionResult<Users> GetUserById(string userId)
+        public async Task<ActionResult<Users>> GetUserById(Guid userId)
         {
-            var user = users.FirstOrDefault(u => u.UserId == Guid.Parse(userId));
-            if (user == null)
+            if (userId == Guid.Empty)
             {
-                return NotFound(); // 404 status code
+                return BadRequest("UserId Not Found or doesn't exist");
             }
-            return Ok(user); // 200 status code
+            var usersById = await _financialsService.GetUserById(userId);
+            return Ok(usersById);
         }
 
         [HttpPost]

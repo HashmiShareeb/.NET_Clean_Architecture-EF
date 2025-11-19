@@ -1,4 +1,4 @@
-# dotnet entityframeworks
+# Used commands
 
 ```bash
 dotnet ef migrations add init

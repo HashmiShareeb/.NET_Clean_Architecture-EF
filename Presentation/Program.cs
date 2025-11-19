@@ -1,7 +1,18 @@
 using crispy_winner.infrastructure.context;
+using FinancialApi.Domain.Interfaces;
+using FinancialApi.Domain.Services;
+using FinancialApi.infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<FinancialsService>();
+
+//Inject interfaces
+builder.Services.AddScoped<IUserRepository, UsersRepository>();
+builder.Services.AddScoped<IBudgetRespository, BudgetRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+//builder.Services.AddScoped<ITransactionsRepository, TransactionsRepository>();
 
 builder.Services.AddControllers(); //!add controllers to the services
 
