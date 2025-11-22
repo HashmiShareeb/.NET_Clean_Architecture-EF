@@ -24,13 +24,13 @@ public class TransactionsRepository : ITransactionsRepository
         return await _context.Transactions.FindAsync(transactionId);
     }
 
-    public async Task<Transaction> AddCTransactions(Transaction transaction)
+    public async Task<Transaction> AddTransactions(Transaction transaction)
     {
         _context.Transactions.AddAsync(transaction);
         await _context.SaveChangesAsync();
         return transaction;
     }
-
+    
     public async Task UpdateTransactions(Transaction transaction)
     {
         _context.Update(transaction);

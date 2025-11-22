@@ -6,7 +6,7 @@ public interface ITransactionsRepository
 {
     Task<IEnumerable<Transaction>> GetAllTransactions();
     Task<Transaction> GetTransactionsById(Guid transactionId);
-    Task<Transaction> AddCTransactions(Transaction  transaction);
+    Task<Transaction> AddTransactions(Transaction  transaction);
     Task UpdateTransactions(Transaction transaction);
     Task DeleteTransactions(Guid transactionId);
 }

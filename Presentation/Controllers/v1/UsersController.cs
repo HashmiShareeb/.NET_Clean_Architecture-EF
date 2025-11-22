@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using crispy_winner.Domain.Entities;
+using FinancialApi.Domain.Interfaces;
 using FinancialApi.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,12 @@ namespace crispy_winner.Presentation.Controllers
     public class UsersController : ControllerBase
     {
         private readonly FinancialsService _financialsService;
+        private readonly UserService _userService;
 
-        public UsersController(FinancialsService _financialsService)
+        public UsersController(FinancialsService _financialsService, UserService _userService)
         {
            this._financialsService = _financialsService;
+           this._userService = _userService;
         }
         
         // basic list for now
@@ -39,7 +42,7 @@ namespace crispy_winner.Presentation.Controllers
         {
             //return Ok(users); // 200 status code
             
-            var allUsers  = await _financialsService.GetAllUsers();
+            var allUsers  = await _userService.GetAllUsers();
             return Ok(allUsers);
         }
 
@@ -50,27 +53,26 @@ namespace crispy_winner.Presentation.Controllers
             {
                 return BadRequest("UserId Not Found or doesn't exist");
             }
-            var usersById = await _financialsService.GetUserById(userId);
+            var usersById = await _userService.GetUserById(userId);
             return Ok(usersById);
         }
-
+        
         [HttpPost]
-        public ActionResult<Users> CreateUser(Users newUser)
+        public async Task<ActionResult<Users>> AddUser([FromBody] Users newUser)
         {
             if (newUser == null)
-            {
-                return BadRequest(); // return bad request if newUser is null
-            }
+                return BadRequest();
 
-            //newUser.UserId = Guid.NewGuid().ToString(); // assign new GUID as UserId
-            newUser.UserId = Guid.NewGuid(); // assign new GUID as UserId
-            users.Add(newUser);
+            newUser.UserId = Guid.NewGuid();
 
-            //specify that the object was created => 200 status code
+            // add to DB
+            await _userService.AddUser(newUser);
+
             return CreatedAtAction(nameof(GetUserById), new { userId = newUser.UserId }, newUser);
-
-
         }
+
+
+
 
         // IActionResult for no content return because its an update
         [HttpPut("{userId}")]

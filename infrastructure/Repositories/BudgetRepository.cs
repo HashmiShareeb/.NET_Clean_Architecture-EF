@@ -14,9 +14,9 @@ public class BudgetRepository : IBudgetRespository
         _context = context;
     }
     
-    public async Task<Budget> GetBudgetById(Guid BudgetId)
+    public async Task<Budget> GetBudgetById(Guid budgetId)
     {
-        return await _context.Budgets.FindAsync(BudgetId);
+        return await _context.Budgets.FindAsync(budgetId);
     }
 
     public async Task<Budget> AddBudget(Budget budget)
@@ -35,26 +35,24 @@ public class BudgetRepository : IBudgetRespository
 
     public async Task DeleteBudget(Guid budgetId)
     {
-        _context.Remove(budgetId);
-        await _context.SaveChangesAsync();
-    }
-
-
-    public async Task DeleteBudget(Budget budget)
-    {
-        _context.Remove(budget);
-        await _context.SaveChangesAsync();
-        
+        var budget = await _context.Budgets.FindAsync(budgetId);
+        if (budget != null)
+        {
+            _context.Budgets.Remove(budget);
+            await _context.SaveChangesAsync();
+        }
     }
     
-
     public async Task<IEnumerable<Budget>> GetAllBudgets()
     {
         return await _context.Budgets.ToListAsync();
     }
-
-    public Task<Budget> GetBudget(Guid budgetId)
+    
+    //? --> possible null
+    public async Task<Budget?> GetBudgetWithTransactions(Guid budgetId)
     {
-        throw new NotImplementedException();
+        return await _context.Budgets
+            .Include(b => b.Transactions)
+            .FirstOrDefaultAsync(b => b.BudgetId == budgetId);
     }
 }

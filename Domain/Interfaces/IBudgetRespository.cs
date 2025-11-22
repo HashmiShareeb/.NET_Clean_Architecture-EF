@@ -6,10 +6,10 @@ namespace FinancialApi.Domain.Interfaces;
 public interface IBudgetRespository
 {
     Task<IEnumerable<Budget>> GetAllBudgets();
-    Task<Budget> GetBudgetById(Guid BudgetId);
+    Task<Budget?> GetBudgetWithTransactions(Guid budgetId);
+    Task<Budget> GetBudgetById(Guid budgetId);
     Task <Budget>AddBudget(Budget budget);
     Task UpdateBudget(Budget budget);
     Task DeleteBudget(Guid budgetId);
-    
     
 }
