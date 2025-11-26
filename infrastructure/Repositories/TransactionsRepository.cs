@@ -24,9 +24,14 @@ public class TransactionsRepository : ITransactionsRepository
         return await _context.Transactions.FindAsync(transactionId);
     }
 
+    public async Task<IEnumerable<Transaction>> GetUserTransactions(Guid userId)
+        => await _context.Transactions
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+
     public async Task<Transaction> AddTransactions(Transaction transaction)
     {
-        _context.Transactions.AddAsync(transaction);
+        await _context.Transactions.AddAsync(transaction);
         await _context.SaveChangesAsync();
         return transaction;
     }

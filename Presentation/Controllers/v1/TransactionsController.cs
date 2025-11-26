@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using crispy_winner.Domain.Entities;
+using FinancialApi.Applications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace crispy_winner.Presentation.Controllers
@@ -13,25 +15,28 @@ namespace crispy_winner.Presentation.Controllers
 
     public class TransactionsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok("This is the TransactionsController for API version 1.0");
+        private readonly TransactionsService _transactionService;
+
+        public TransactionsController(TransactionsService service)
+        { 
+            _transactionService = service;
         }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var t = await _transactionService.GetAllTransactions();
+            return Ok(t);
+        }
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetUserTransactions(Guid userId)
+            => Ok(await _transactionService.GetUserTransactions(userId));
 
         [HttpPost]
-        public ActionResult CreateTransaction(Transaction transaction)
+        public async Task<ActionResult<Transaction>> CreateTransaction([FromBody] Transaction transaction)
         {
-            if (transaction == null)
-            {
-                return BadRequest(); // return bad request if transaction is null
-            }
+            var created = await _transactionService.AddTransaction(transaction);
 
-
-            return CreatedAtAction(nameof(Get), new { }, transaction); // return 201 status code
+            return  CreatedAtAction(nameof(Get), new { }, transaction);
         }
-
-
-
     }
 }

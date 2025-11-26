@@ -11,6 +11,7 @@ builder.Services.AddScoped<FinancialsService>();
 builder.Services.AddScoped<BudgetService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TransactionsService>();
+builder.Services.AddScoped<CategoryService>();
 
 
 //Inject interfaces

@@ -9,4 +9,6 @@ public interface ICategoriesRepository
     Task<Categories> AddCategory(Categories categories);
     Task UpdateCategory(Categories categories);
     Task DeleteCategory(Guid categoryId);
+    
+    
 }
