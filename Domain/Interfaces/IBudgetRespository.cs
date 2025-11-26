@@ -11,5 +11,6 @@ public interface IBudgetRespository
     Task <Budget>AddBudget(Budget budget);
     Task UpdateBudget(Budget budget);
     Task DeleteBudget(Guid budgetId);
-    
+    Task <Budget?> GetBudgetByUser(Guid userId, Guid categoryId, DateTime month );
+
 }

@@ -15,3 +15,4 @@ public class BudgetDTO
     public bool IsExceeded { get; set; }
     
 }
+

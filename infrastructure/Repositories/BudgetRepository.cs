@@ -19,12 +19,12 @@ public class BudgetRepository : IBudgetRespository
         return await _context.Budgets.FindAsync(budgetId);
     }
 
-    public async Task<Budget> AddBudget(Budget budget)
-    {
-        await _context.AddAsync(budget);
+    public async Task <Budget>AddBudget(Budget budget){
+        await _context.Budgets.AddAsync(budget);
         await _context.SaveChangesAsync();
         return budget;
     }
+
 
     public async Task UpdateBudget(Budget budget)
     {
@@ -42,7 +42,14 @@ public class BudgetRepository : IBudgetRespository
             await _context.SaveChangesAsync();
         }
     }
-    
+
+    public Task<Budget?> GetBudgetByUser(Guid userId, Guid categoryId, DateTime month)
+    {
+        var budget = _context.Budgets;
+        return budget.Where(b => b.UserId == userId && b.CategoryId == categoryId && b.Month == month).FirstOrDefaultAsync();
+        
+    }
+
     public async Task<IEnumerable<Budget>> GetAllBudgets()
     {
         return await _context.Budgets.ToListAsync();

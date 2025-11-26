@@ -53,46 +53,33 @@ namespace crispy_winner.Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult<BudgetDTO> CreateBudget(BudgetDTO newBudgetDto)
+        public async Task<ActionResult<BudgetDTO>> CreateBudget(CreateBudgetDTO dto)
         {
-            if (newBudgetDto == null)
-                return BadRequest();
-
-            // 1. Validate user exists
-            var user = UsersController.users.FirstOrDefault(u => u.UserId == newBudgetDto.UserId);
-            if (user == null)
-                return NotFound($"User with Id {newBudgetDto.UserId} does not exist");
-
-            // 2. Map DTO to Budget entity
-            var budget = new Budget
+            try
             {
-                BudgetId = Guid.NewGuid(),
-                UserId = user.UserId,
-                CategoryId = newBudgetDto.CategoryId,
-                Amount = newBudgetDto.AllocatedAmount,
-                Month = newBudgetDto.Month
-                
-            };
+                var createdBudget = await _budgetService.AddBudget(dto);
 
-            budgets.Add(budget);
+                var resultDto = new BudgetDTO
+                {
+                    BudgetId = createdBudget.BudgetId,
+                    UserId = createdBudget.UserId,
+                    CategoryId = createdBudget.CategoryId,
+                    AllocatedAmount = createdBudget.Amount,
+                    Month = createdBudget.Month,
+                    TotalSpent = createdBudget.TotalSpent,
+                    RemainingAmount = createdBudget.RemainingAmount,
+                    PercentUsed = createdBudget.PercentUsed,
+                    IsExceeded = createdBudget.IsExceeded
+                };
 
-            // 3. Map back to DTO
-            var budgetDto = new BudgetDTO
+                return CreatedAtAction(nameof(GetBudget),
+                    new { budgetId = createdBudget.BudgetId },
+                    resultDto);
+            }
+            catch (Exception ex)
             {
-                BudgetId = budget.BudgetId,
-                CategoryId = budget.CategoryId,
-                UserId = user.UserId,
-                AllocatedAmount = budget.Amount,
-                Month = budget.Month,
-                TotalSpent = budget.TotalSpent,
-                RemainingAmount = budget.RemainingAmount,
-                PercentUsed = budget.PercentUsed,
-                IsExceeded = budget.IsExceeded
-            };
-
-            return CreatedAtAction(nameof(GetBudget), new { budgetId = budgetDto.BudgetId }, budgetDto);
+                return BadRequest(ex.Message);
+            }
         }
-
-        
     }
 }

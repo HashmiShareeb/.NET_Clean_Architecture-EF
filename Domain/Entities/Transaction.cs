@@ -8,7 +8,8 @@ namespace crispy_winner.Domain.Entities
 {
     
     public class Transaction
-    {
+    {   
+        public Guid TransactionId { get; set; }
         public Guid UserId { get; set; }
 
         public Guid CategoryId { get; set; }
