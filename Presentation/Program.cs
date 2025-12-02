@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using crispy_winner.infrastructure.context;
 using FinancialApi.Applications;
 using FinancialApi.Domain.Interfaces;
@@ -20,7 +21,10 @@ builder.Services.AddScoped<IBudgetRespository, BudgetRepository>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ITransactionsRepository, TransactionsRepository>();
 
-builder.Services.AddControllers(); //!add controllers to the services
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+}); //!add controllers to the services + allow enums to be lowercased and accepted into JSON response
 
 builder.Services.AddApiVersioning(options =>
 {

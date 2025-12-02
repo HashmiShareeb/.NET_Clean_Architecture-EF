@@ -2,6 +2,6 @@
 
 public enum CategoryType
 {
-    EXPENSE, 
+    EXPENSE,
     INCOME
 }

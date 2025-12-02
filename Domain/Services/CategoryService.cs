@@ -22,4 +22,5 @@ public class CategoryService
         category.CategoryId = Guid.NewGuid();
         return await _categoryRepository.AddCategory(category);
     }
+
 }
