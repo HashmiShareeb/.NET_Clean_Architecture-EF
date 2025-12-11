@@ -24,7 +24,9 @@ public class TransactionsService
         await _transactionsRepository.GetTransactionsById(transactionId);
 
     public async Task<Transaction> AddTransaction(Transaction transaction)
-    {
+    {   
+        
+        
         var user = await _userRepository.GetUserById(transaction.UserId);
         if (user == null)
             throw new Exception("User not found");
@@ -33,7 +35,9 @@ public class TransactionsService
         if (category == null)
             throw new Exception("Category not found");
 
+        transaction.TransactionId = Guid.NewGuid();
         transaction.Date = DateTime.UtcNow;
+        
 
         return await _transactionsRepository.AddTransactions(transaction);
 

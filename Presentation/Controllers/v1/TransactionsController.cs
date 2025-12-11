@@ -30,13 +30,21 @@ namespace crispy_winner.Presentation.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetUserTransactions(Guid userId)
             => Ok(await _transactionService.GetUserTransactions(userId));
-
+        
         [HttpPost]
         public async Task<ActionResult<Transaction>> CreateTransaction([FromBody] Transaction transaction)
         {
-            var created = await _transactionService.AddTransaction(transaction);
-
-            return  CreatedAtAction(nameof(Get), new { }, transaction);
+            try
+            {
+                var created = await _transactionService.AddTransaction(transaction);
+                return CreatedAtAction(nameof(GetUserTransactions), 
+                    new { userId = created.UserId }, created);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+        
     }
 }
