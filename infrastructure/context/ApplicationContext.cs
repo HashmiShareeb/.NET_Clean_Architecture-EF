@@ -23,6 +23,11 @@ namespace crispy_winner.infrastructure.context
             modelBuilder.Entity<Categories>().HasKey(c => c.CategoryId);
             modelBuilder.Entity<Transaction>().HasKey(t => new { t.UserId, t.CategoryId, t.Date });
             modelBuilder.Entity<Budget>().HasKey(b => new { b.UserId, b.CategoryId, b.Month });
+            
+            // FIX ENUM storage
+            modelBuilder.Entity<Categories>()
+                .Property(c => c.CategoryType)
+                .HasConversion<string>();
 
             base.OnModelCreating(modelBuilder);
 
